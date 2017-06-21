@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <title>Add demo</title>
+</head>
+<body>
+<h2> Listing of all AD test</h2>
+
+<div th:each="ad: ${ads}"></div>
+<h2> Title:<span>th:text = "${ad.title}" </span> </h2>
+<h2> Title:<span>th:text = "${ad.body}" </span> </h2>
+</body>
+
+<!--<div th:each="item : ${shoppingCart}">-->
+    <!--<p th:text="${item.name}" />-->
+<!--</div>-->
+
+
+</body>
+</html>
