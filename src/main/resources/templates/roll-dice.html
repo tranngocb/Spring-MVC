@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Roll Dice</title>
+</head>
+<body>
+<h1> Asks the user to guess a number. </h1>
+
+<h1>The number you've guessed is: , <!--/*@thymesVar id="numberRoll" type=""*/-->
+<span th:text="${numberRoll}">Rolls</span> !</h1>
+<span th:text="${guess}">Guess</span>
+
+<div class="alert alert-danger" th:if="${guess}">
+    <h3>Wrong guess, try again! </h3>
+</div>
+
+</body>
+</html>
