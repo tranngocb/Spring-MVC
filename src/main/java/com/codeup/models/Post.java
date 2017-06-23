@@ -1,16 +1,34 @@
 package com.codeup.models;
 
+import javax.persistence.*;
+
+
 /**
  * Created by bichtran on 6/19/17.
  */
+@Entity
+@Table(name = "posts")
 public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false,columnDefinition = "Text")
     private String body;
+
+    @OneToOne
+    private User owner;
 
     public Post(String title,String body) {
         this.title = title;
         this.body = body;
+    }
+    //Empty model needed by form in create.html
+    public Post(){
+
     }
     public long getId() {
         return id;

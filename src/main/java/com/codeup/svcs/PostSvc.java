@@ -2,7 +2,11 @@ package com.codeup.svcs;
 
 import com.codeup.controlers.PostsController;
 import com.codeup.models.Post;
+import com.codeup.repositories.PostsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Iterator;
 import java.util.List;
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,34 +17,37 @@ import java.util.ArrayList;
 @Service("postSvc")
 public class PostSvc {
     //private List<Post> posts;
-    List<Post> posts = new ArrayList<>();
+    //List<Post> posts = new ArrayList<>();
 
-    public PostSvc() { createPosts();
+    private PostsRepository postsDao;  //Declare  type PostsRepository
 
+    //The contractor
+    @Autowired
+    public PostSvc(PostsRepository postDao) {
+        this.postsDao = postDao;
+//        createPosts();
     }
 
-    //    retrieving all the posts
-    public List<Post> findAll() {
-        return posts;
-    }
+    // select * from posts
+    public Iterable<Post> findAll(){
+        return postsDao.findAll();
+//Add a save method to your PostsSvc. It should take in a Post object, set it's id property, and add it to the list of posts.
+        // select * from posts
+        }
 
     public Post save(Post post){
-        post.setId((long)posts.size() + 1); //Array is index 0
-        posts.add(post);
-        return post;
-    }
-    public Post findOne(long id) {
-        return posts.get((int) (id - 1));
-    }
-    //Create a few test posts so that you have some data that you can test.
-    private void createPosts() {
-        posts = new ArrayList<>();
 
-         save(new Post("playstation for sale", "$1000 OBO"));
-         save(new Post("xbox for sale", "$1000 OBO"));
+        return postsDao.save(post);  //insert into poss(title,body) value (?,?)
     }
-    //Create a new post
-    public void createPost(String title, String body){
-        save(new Post(title, body));
+
+//    private void createPosts() {
+//        save(new Post("ps4", "shiny and new"));
+//        save(new Post("xbox juan", "not so shiny and new"));
+//    }
+    public Post findOne(long id) {
+        return postsDao.findOne(id);
     }
+
+    public void deletePost(long id){
+        postsDao.delete(id);}
 }

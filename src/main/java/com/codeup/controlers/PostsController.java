@@ -15,6 +15,7 @@ import java.util.List;
  */
 @Controller
 public class PostsController {
+
     private final PostSvc postSvc;
 
     @Autowired
@@ -23,50 +24,55 @@ public class PostsController {
     }
 
     @GetMapping("/posts")
-    public String posts() {
-        return "Post index Page";
+    public String viewAll(Model model) {
+        Iterable<Post> posts = postSvc.findAll();
+        //List<Post> posts = postSvc.findAll(); remove the previous lis
+        model.addAttribute("posts", posts);
+
+        return "posts/index";
     }
 
-    @GetMapping(path = "/posts/{id}")
-    @ResponseBody
-    public String viewIndividual(@PathVariable long id) {
-        return "view an individual post with ID " + id;
-    }
-
-    @GetMapping("/posts/create")
-    @ResponseBody
-    public String showPostsForm() {
-        return "view the form for creating a post";
-    }
-
-    //POST	/posts/create	view the form for creating a post
-    @PostMapping("/posts/create")
-    @ResponseBody
-    public String savePost() {
-        return "create a new post";
-    }
-
-    @GetMapping("/posts/{title}/{body}")
-    public String showIndividual(@PathVariable String title, @PathVariable String body, Model model) {
-        Post post = new Post(title, body);
-//            String indTitle = post.getTitle();
-//            post.getBody();
+    @GetMapping("/posts/{id}")
+    public String viewIndividualPost(@PathVariable long id, Model model) {
+        // Inside the method that shows an individual post, create a new post object and pass it to the view.
+        Post post = postSvc.findOne(id);
         model.addAttribute("post", post);
-
         return "posts/show";
     }
 
-    @GetMapping("/posts/allpost")
-    public String showAllPost(Model model) {
-        List<Post> posts = new ArrayList<>();
-        posts.add(new Post("First title","Body for 1st post"));
-        posts.add(new Post("Second title","Body for the second post"));
-        model.addAttribute("posts", posts);
-//        List<String> list2 = new ArrayList<>();
-//        list2.add("Second  title");
-//        list2.add("Seconf Body");
+    @GetMapping("/posts/create")
+    //@ResponseBody
+    public String showPostForm(Model model) {
+        model.addAttribute("post",new Post()); // This method should pass a new (i.e. empty) Post object to the view.
 
-//        return null;
-    return "/posts/index";
+        return "posts/create";
+    }
+    //Use what you have learned in this lesson to have the post creation form submit a post object and store that post
+    // with the posts service.
+
+    @PostMapping("/posts/create")
+    public String savePost(
+        @RequestParam(name = "title") String title,// String title = request.getParameter("title")
+        @RequestParam(name = "body") String body,
+        Model model  // Model model = new Model();
+        ) {
+        Post post= new Post(title,body);
+        model.addAttribute("post",post);
+
+        return "/posts/create";
+    }
+    @GetMapping("/posts/{id}/edit")
+    public String showEditForm(@PathVariable long id, Model model) {
+        // TODO: Find this post in the data source using the service
+        Post post = postSvc.findOne(id);
+        // TODO: Pass the post found to the view
+        model.addAttribute("post", post);
+        return "posts/edit";
+    }
+
+    @PostMapping("/posts/{id}/edit")
+    public String editPost(@ModelAttribute Post post){
+        postSvc.save(post);
+        return "redirect:/posts/" + post.getId();
     }
 }
