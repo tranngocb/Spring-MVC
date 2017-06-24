@@ -1,31 +1,43 @@
 package com.codeup.models;
 
 import javax.persistence.*;
-import java.security.PrivateKey;
 
 /**
- * Created by bichtran on 6/22/17.
+ * Created by fer on 6/22/17.
  */
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy =GenerationType.IDENTITY)
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)
     private String username;
+
     @Column(nullable = false)
     private String email;
+
     @Column(nullable = false)
     private String password;
-//Contructor
-    public User(String username,String email,String password){
+
+    public User(){
+
+    }
+
+    public User(long id, String username, String email, String password) {
+        this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+    }
 
+    public User(User user) {
+        this.id = user.id;
+        this.username = user.username;
+        this.password = user.password;
+        this.email = user.email;
     }
 
     public long getId() {

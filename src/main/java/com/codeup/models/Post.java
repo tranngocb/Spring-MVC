@@ -2,10 +2,11 @@ package com.codeup.models;
 
 import javax.persistence.*;
 
+// A Java bean is class with a default constructor and it has getters and setters for all
+// it attributes/properties/instance variables
 
-/**
- * Created by bichtran on 6/19/17.
- */
+// Both the ORM (Hibernate) and the view (Thymeleaf) will use the getters and setters
+
 @Entity
 @Table(name = "posts")
 public class Post {
@@ -16,26 +17,20 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false,columnDefinition = "Text")
+    @Column(nullable = false, columnDefinition = "text")
     private String body;
 
     @OneToOne
     private User owner;
 
-    public Post(String title,String body) {
+    public Post(String title, String body, User owner) {
         this.title = title;
         this.body = body;
-    }
-    //Empty model needed by form in create.html
-    public Post(){
-
-    }
-    public long getId() {
-        return id;
+        this.owner = owner;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public Post() {
+
     }
 
     public String getTitle() {
@@ -52,5 +47,21 @@ public class Post {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }
